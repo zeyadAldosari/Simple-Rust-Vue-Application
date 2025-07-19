@@ -89,10 +89,8 @@ const handleLogin = async () => {
   loading.value = false;
 
   if (result.success) {
-    apiSuccessMessage.value = result.message;
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 1500);
+    localStorage.setItem("userEmail", username.value);
+    router.push("/dashboard");
   } else {
     apiErrorMessage.value = result.message;
   }
