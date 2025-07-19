@@ -20,6 +20,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
+<<<<<<< HEAD
     component: {
       template: `
         <div class="min-h-screen flex items-center justify-center p-4 bg-gray-900 text-white">
@@ -38,6 +39,10 @@ const routes = [
         },
       },
     },
+=======
+    component: DashboardView,
+    meta: { requiresAuth: true },
+>>>>>>> 0466e1d (update index.js)
   },
 ];
 
@@ -46,4 +51,15 @@ const router = createRouter({
   routes,
 });
 
+<<<<<<< HEAD
+=======
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !localStorage.getItem("userEmail")) {
+    next("/login");
+  } else {
+    next();
+  }
+});
+
+>>>>>>> 0466e1d (update index.js)
 export default router;
