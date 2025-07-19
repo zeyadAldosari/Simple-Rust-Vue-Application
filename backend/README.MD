@@ -1,48 +1,63 @@
-# Rust Backend with Diesel (SQLite)
+# Backend
 
-This is a Rust backend project using [Diesel ORM](https://diesel.rs/) and SQLite as the database. It provides a foundation for performing basic CRUD operations (Create, Read, Update, Delete) via the command-line interface or server-side logic.
+This is the backend for the project, built with Rust, Axum, Diesel ORM, and SQLite.
 
----
+## Project Structure
+
+- `src/` – Main source code
+  - `main.rs` – API server entry point (Axum)
+  - `handlers.rs` – HTTP request handlers (register, login)
+  - `models.rs` – Data models and validation
+  - `db.rs` – Database connection logic
+  - `schema.rs` – Diesel schema (auto-generated)
+  - `utils.rs` – Utility functions (e.g., password hashing)
+  - `bin/` – CLI utilities (create, get, show, delete users)
+- `migrations/` – Database migrations (users table)
+- `Cargo.toml` – Rust dependencies and metadata
+- `diesel.toml` – Diesel configuration
 
 ## Prerequisites
-
-- [Rust (1.88.0)](https://rust-lang.org)
-- SQLite installed
-- Diesel CLI
-- [Make sure to install `libsqlite3` if you faced problems with migrations]
-
----
+- [Rust](https://rust-lang.org) (1.88.0 or newer)
+- SQLite
+- Diesel CLI (`cargo install diesel_cli --no-default-features --features sqlite`)
+- `libsqlite3` (for migrations)
 
 ## Setup Instructions
 
-### 1. Install Diesel CLI
-```bash
-cargo install diesel_cli --no-default-features --features sqlite
-```
+1. Set the database URL:
+   ```env
+   export DATABASE_URL=db.sqlite
+   ```
+2. Run Diesel migrations:
+   ```bash
+   diesel setup
+   diesel migration run
+   ```
+3. Build and run the server:
+   ```bash
+   cargo run
+   ```
+4. Update the schema.rs manually if the id not Interger (sqlite metadata limitation)
 
-### 2. Install Diesel CLI
-```env
-DATABASE_URL=db.sqlite
-```
+## API Endpoints
 
-### 3. Initialize Diesel and run migrations
-```env
-diesel setup
-diesel migration run
-```
+- `POST /api/register` – Register a new user
+  - Request: `{ "username": "email", "password": "string" }`
+  - Password must be at least 8 characters, with uppercase, lowercase, digit, and special character
+  - Response: Success or error message
 
-### 4. Run Diesel Migrations:
-```bash
-diesel setup
-diesel migration run
-```
+- `POST /api/login` – Login with username and password
+  - Request: `{ "username": "email", "password": "string" }`
+  - Response: Success or error message
 
-### 5. Update id in the schema.rs manually
-```bash
-id -> Integer,
-```
+## Tech Stack
+- [Rust](https://rust-lang.org/)
+- [Axum](https://docs.rs/axum/)
+- [Diesel ORM](https://diesel.rs/)
+- [SQLite](https://www.sqlite.org/)
+- [Tokio](https://tokio.rs/)
 
-### 5. Build and run
-```bash
-cargo run
-```
+## Notes
+- The backend listens on `0.0.0.0:3000` by default.
+- CORS is enabled for `http://localhost:5173` (the frontend dev server).
+- See the main project README for frontend setup and integration.
