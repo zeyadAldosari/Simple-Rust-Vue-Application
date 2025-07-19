@@ -21,8 +21,8 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: DashboardView, // Use the imported component
-    meta: { requiresAuth: true }, // Add a meta field to indicate it requires auth
+    component: DashboardView,
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -31,13 +31,10 @@ const router = createRouter({
   routes,
 });
 
-// Navigation Guard to check authentication
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !localStorage.getItem("userEmail")) {
-    // If the route requires auth and no user email is found, redirect to login
     next("/login");
   } else {
-    // Otherwise, proceed
     next();
   }
 });
